@@ -2,11 +2,13 @@
 
 const mongoose = require("mongoose");
 const Product = mongoose.model('Product');
+const ValidatorContract = require('../validators/fluent-validators');
+const repository = require('../repositories/product-repository');
 
 
 exports.get = (req,res) => {
-    Product  
-        .find({ active: true}, 'title price slug tags')
+    repository
+        .get()
         .then(data => {
             res.status(200).send(data);
         })
@@ -56,6 +58,12 @@ exports.getByTag = (req,res) => {
 };
 
 exports.post = (req, res) => {
+    let contract = new ValidatorContract();
+    contract.hasMinLen(req.body.title, 3, "Title length min 3 caracters");
+    contract.hasMinLen(req.body.slug, 3, "Slug length min 3 caracters");
+    contract.hasMinLen(req.body.description, 3, "Description length min 3 caracters");
+    if(!contract.isValid()) return res.status(400).send(contract.errors()).end();
+    
     var product = new Product(req.body);
     product
         .save()
