@@ -17,11 +17,8 @@ exports.get = (req,res) => {
         });
 };
 exports.getById = (req,res) => {
-    Product  
-        .findOne({ 
-            _id: req.params.id,
-            active: true
-        }, 'title price slug tags')
+    repository
+        .getById(req)
         .then(data => {
             console.log("foi")
             res.status(200).send(data);
@@ -31,11 +28,8 @@ exports.getById = (req,res) => {
         });
 };
 exports.getBySlug = (req,res) => {
-    Product  
-        .findOne({ 
-            slug: req.params.slug,
-            active: true
-        }, 'title price slug tags')
+    repository
+        .getBySlug(req)
         .then(data => {
             res.status(200).send(data);
         })
@@ -44,11 +38,8 @@ exports.getBySlug = (req,res) => {
         });
 };
 exports.getByTag = (req,res) => {
-    Product  
-        .findOne({ 
-            tags: req.params.tag,
-            active: true
-        }, 'title price slug tags')
+    repository
+        .getByTag(req)
         .then(data => {
             res.status(200).send(data);
         })
@@ -64,9 +55,8 @@ exports.post = (req, res) => {
     contract.hasMinLen(req.body.description, 3, "Description length min 3 caracters");
     if(!contract.isValid()) return res.status(400).send(contract.errors()).end();
     
-    var product = new Product(req.body);
-    product
-        .save()
+    repository
+        .create(req.body)
         .then(x => {
             res.status(201).send({ message: 'Product save success'});
         })
@@ -76,14 +66,8 @@ exports.post = (req, res) => {
 };
 
 exports.put = (req, res) => {
-    Product
-        .findByIdAndUpdate(req.params.id, {
-            $set: {
-                title: req.body.title,
-                description: req.body.description,
-                price: req.body.price
-            }
-        })
+    repository
+        .update(req)
         .then(x => {
             res.status(200).send({ message: 'Product update success'});
         })
@@ -92,8 +76,8 @@ exports.put = (req, res) => {
         });
 };
 exports.delete = (req, res) => {
-    Product
-        .findByIdAndRemove(req.body.id)
+    repository
+        .remove(req)
         .then(x => {
             res.status(200).send({ message: 'Product removed success'});
         })
