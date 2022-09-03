@@ -7,6 +7,8 @@ const mongoose = require('mongoose');
 //connection mongo
 mongoose.connect('mongodb+srv://petshop_leop:mongopetshop@cluster0.rahrifh.mongodb.net/?retryWrites=true&w=majority');
 const Product = require('./models/product');
+const Customer = require('./models/customer');
+
 const indexRoute = require('./routes/index-route');
 const productRoute = require('./routes/product-route');
 
