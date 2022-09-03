@@ -9,6 +9,7 @@ lerna-debug.log*
 password_edit.png
 password_mongo.png
 conexao_mongo.png
+run.sh
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
